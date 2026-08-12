@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banking Data Engineering Flow</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif;color:#18324d;overflow:auto}
+.header{background:#154b80;color:#fff;padding:24px 30px;font-size:30px;font-weight:700}
+.subtitle{background:#f0f4f9;padding:12px 30px;color:#5c7188;font-size:16px;border-bottom:1px solid #dfe6ef}
+.canvas{position:relative;width:1800px;min-height:1120px;margin:auto;background:#fff;padding:42px 34px 80px}
+.lane{font-size:16px;font-weight:700;color:#536a82;margin-bottom:14px}
+.row{display:flex;align-items:center;gap:22px}
+.card{width:215px;min-height:145px;padding:16px 17px;border:2px solid #9db8d5;border-radius:14px;background:linear-gradient(145deg,#fff,#f7fafd);box-shadow:0 5px 13px rgba(30,65,100,.10);flex:none}
+.card.orange{border-color:#c98942}.card.green{border-color:#83ad98}.card.purple{border-color:#a798c7}.card.red{border-color:#c99797}
+.title{font-size:17px;font-weight:700;line-height:1.18;margin-bottom:12px}
+.desc{font-size:12.5px;line-height:1.45;color:#63778b}
+.tag{font-size:11px;font-weight:700;color:#526a80;margin-top:12px}
+.arrow{width:42px;height:4px;background:#2768df;position:relative;flex:none}
+.arrow:after{content:"";position:absolute;right:-2px;top:-7px;border-left:13px solid #2768df;border-top:9px solid transparent;border-bottom:9px solid transparent}
+.arrow.orange{background:#b96e25}.arrow.orange:after{border-left-color:#b96e25}
+.arrow.green{background:#4d9670}.arrow.green:after{border-left-color:#4d9670}
+.data{margin-top:120px}
+.rules{width:285px;min-height:160px;margin:100px auto 0;border-color:#bf8f8f;background:#fffafa}
+.outputs{margin-top:105px;display:flex;justify-content:center;gap:38px}
+.output{width:255px;min-height:110px;border:2px solid #a9b9c9;border-radius:14px;background:#f8fafc;padding:17px;text-align:center}
+.output .title{font-size:16px;margin-bottom:7px}
+.output .desc{font-size:12px}
+.label{position:absolute;font-size:11px;color:#667789;background:#fff;padding:3px 7px;border-radius:4px;z-index:5}
+.line{position:absolute;height:3px;transform-origin:left center;z-index:1;border-radius:3px;background:#738bb3}
+.line.orange{background:#b96e25}
+.line.green{background:#4d9670}
+.note{position:absolute;left:35px;bottom:24px;color:#718398;font-size:11px}
+.legend{position:absolute;bottom:24px;right:34px;display:flex;gap:22px;font-size:11px;color:#65778a}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:5px}
+</style>
+</head>
+<body>
+
+<div class="header">Banking — Data Engineering Flow</div>
+<div class="subtitle">
+Customer &amp; banking sources → Secure ingestion → Bronze → Silver → Banking rules → Curated data
+</div>
+
+<div class="canvas">
+
+<div class="lane">SOURCE &amp; CONFIGURATION LANE</div>
+<div class="row">
+
+<div class="card">
+<div class="title">🏦 Core Banking Portal</div>
+<div class="desc">Banking operations users maintain source configuration, mappings, processing rules and data controls.</div>
+<div class="tag">CONFIG LANE</div>
+</div>
+
+<div class="arrow"></div>
+
+<div class="card">
+<div class="title">⚙️ Banking API Gateway</div>
+<div class="desc">Validates requests, applies authentication and publishes banking integration events.</div>
+<div class="tag">CONFIG LANE</div>
+</div>
+
+<div class="arrow"></div>
+
+<div class="card">
+<div class="title">☁️ Azure Service Bus</div>
+<div class="desc">Reliable asynchronous transport for banking events and configuration changes.</div>
+<div class="tag">CONFIG LANE</div>
+</div>
+
+<div class="arrow"></div>
+
+<div class="card">
+<div class="title">⚡ Event Processing</div>
+<div class="desc">Consumes events, validates schemas and routes transactions to downstream processing.</div>
+<div class="tag">CONFIG LANE</div>
+</div>
+
+<div class="arrow"></div>
+
+<div class="card">
+<div class="title">🗄️ Banking Config Tables</div>
+<div class="desc">Stores account mappings, transaction rules, reference data and version history.</div>
+<div class="tag">CONFIG LANE</div>
+</div>
+
+</div>
+
+<div class="data">
+<div class="lane">BANKING DATA LANE</div>
+<div class="row">
+
+<div class="card">
+<div class="title">💳 Banking Source Systems</div>
+<div class="desc">Core banking, cards, loans, deposits, payments, ATM and customer systems.</div>
+<div class="tag">DATA SOURCES</div>
+</div>
+
+<div class="arrow orange"></div>
+
+<div class="card orange">
+<div class="title">📁 Secure File / SFTP</div>
+<div class="desc">Encrypted settlement files, payment files, regulatory extracts and external partner feeds.</div>
+<div class="tag">INGESTION</div>
+</div>
+
+<div class="arrow orange"></div>
+
+<div class="card orange">
+<div class="title">🪣 Bronze Zone</div>
+<div class="desc">Raw, immutable transaction landing layer preserving source data and ingestion metadata.</div>
+<div class="tag">RAW DATA</div>
+</div>
+
+<div class="arrow orange"></div>
+
+<div class="card green">
+<div class="title">💎 Silver Zone</div>
+<div class="desc">Standardized, deduplicated, reconciled and quality-checked banking data.</div>
+<div class="tag">CURATED DATA</div>
+</div>
+
+</div>
+</div>
+
+<div class="card rules">
+<div class="title">⚡ Banking Business Rules</div>
+<div class="desc">
+Applies transaction validation, customer matching, fraud indicators,
+reconciliation rules, AML screening logic and configurable transformations.
+</div>
+<div class="tag">CONVERGENCE — RULES ENGINE</div>
+</div>
+
+<div class="label" style="left:780px;top:620px">canonical banking data</div>
+<div class="label" style="left:1370px;top:405px">transaction rules reference</div>
+<div class="label" style="left:710px;top:865px">validated transactions</div>
+<div class="label" style="left:1010px;top:865px">current-state data</div>
+<div class="label" style="left:1300px;top:865px">historical versions</div>
+
+<div class="outputs">
+
+<div class="output">
+<div class="title">📊 Banking Analytics &amp; BI</div>
+<div class="desc">Customer, transaction, branch, product and financial reporting datasets.</div>
+</div>
+
+<div class="output">
+<div class="title">🛡️ Risk &amp; Fraud Analytics</div>
+<div class="desc">Curated data for fraud detection, credit risk, AML and operational risk models.</div>
+</div>
+
+<div class="output">
+<div class="title">📈 Regulatory Reporting</div>
+<div class="desc">Auditable and governed datasets for regulatory and compliance reporting.</div>
+</div>
+
+</div>
+
+<div class="line" style="left:1500px;top:270px;width:360px;transform:rotate(112deg)"></div>
+<div class="line orange" style="left:890px;top:585px;width:255px;transform:rotate(18deg)"></div>
+<div class="line orange" style="left:965px;top:735px;width:145px;transform:rotate(88deg)"></div>
+<div class="line orange" style="left:965px;top:735px;width:250px;transform:rotate(64deg)"></div>
+<div class="line orange" style="left:965px;top:735px;width:345px;transform:rotate(44deg)"></div>
+
+<div class="note">Sample banking architecture — replace systems and rules with your project-specific components.</div>
+
+<div class="legend">
+<span><span class="dot" style="background:#2768df"></span>Configuration</span>
+<span><span class="dot" style="background:#b96e25"></span>Data ingestion</span>
+<span><span class="dot" style="background:#4d9670"></span>Curated data</span>
+</div>
+
+</div>
+</body>
+</html>
